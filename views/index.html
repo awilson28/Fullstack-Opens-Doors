@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div id="wrapper">
+    	<img src="/images/fullstack.png" id="fullstackLogo">
+    	<img src="/images/vault.png" id="vaultPic">
+    	<div id="lockColor"></div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <script>
+	    var controller = new Leap.Controller({enableGestures: true}),
+	        callMuteRequestMade = false;
+	     
+	    controller.loop(function(frame) {
+	      var gesture  = frame.gestures[0],
+	          type = gesture ? gesture.type : '';
+	     
+	      if (type == 'circle') {
+	        console.log('Circle');
+	     
+	        if (!callMuteRequestMade) {
+	          // Only ask it to mute once!
+	          callMuteRequestMade = true;
+	     
+	          $.ajax({
+	            url: 'http://192.168.1.172:3000',
+	            type: 'GET'
+	          })
+	          .done(function() {
+	          	$('#lockColor').css('background-color','green');
+	          })
+
+	        }
+	      }
+	    });
+	     
+	    controller.on('ready', function() {
+	      console.log('ready');
+	    });
+	    controller.on('connect', function() {
+	      console.log('connect');
+	    });
+	    controller.on('disconnect', function() {
+	      console.log('disconnect');
+	    });
+	    controller.on('focus', function() {
+	      console.log('focus');
+	    });
+	    controller.on('blur', function() {
+	      console.log('blur');
+	    });
+	    controller.on('deviceConnected', function() {
+	      console.log('deviceConnected');
+	    });
+	    controller.on('deviceDisconnected', function() {
+	      console.log('deviceDisconnected');
+	    });
+    </script>
+{% endblock %}
